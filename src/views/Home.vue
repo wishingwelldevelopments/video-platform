@@ -1,18 +1,35 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>foobar</h1>
+    <p>{{ state.data }}</p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+  import { onMounted, reactive } from 'vue'
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  export default {
+    name: 'Home',
+    setup () {
+      const state = reactive({
+        data:null,
+      })
+
+      function getData () {
+        fetch('/api/todos/get?key=d3b07384d113edec49eaa6238ad5ff00')
+        .then(resp => resp.json())
+        .then(resp => {
+          state.data = resp.todos
+        })
+      }
+
+      onMounted(() => {
+        getData()
+      })
+
+      return {
+        state
+      }
+    }
   }
-}
 </script>
